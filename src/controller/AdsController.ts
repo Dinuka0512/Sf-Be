@@ -151,7 +151,7 @@ export const getAllAds = async (req: Request, res: Response) => {
       totalAds: total,
       ads,
     });
-  } catch (err) {
+  } catch (err:any) {
     console.log(err);
     return res.status(500).json({
       message: "Server error",
