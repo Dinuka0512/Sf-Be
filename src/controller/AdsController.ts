@@ -153,7 +153,14 @@ export const getAllAds = async (req: Request, res: Response) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ message: "Server error", "error":err.message });
+    return res.status(500).json({
+      message: "Server error",
+      error: {
+        name: err.name,
+        message: err.message,
+        stack: err.stack
+      }
+    });
   }
 };
 
