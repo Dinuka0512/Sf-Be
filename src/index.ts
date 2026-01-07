@@ -48,6 +48,10 @@ mongoose
     process.exit(1);
   });
 
+app.get("/", (req, res) => {
+  res.send("Smart Farmer Backend is running ✅");
+});
+
 // ✅ START SERVER
 app.listen(SERVER_PORT, () => {
   console.log("Server is running on port : " + SERVER_PORT);
