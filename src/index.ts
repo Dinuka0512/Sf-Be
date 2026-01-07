@@ -20,14 +20,8 @@ app.use(express.json());
 
 // ✅ CORS CONFIGURATION
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://smart-farmer-b2-b-b2-c-rad-project-two.vercel.app",
+  "https://sf-fe-iota.vercel.app/"
 ];
-
-
-
-
-
 
 app.use(
   cors({
