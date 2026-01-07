@@ -24,6 +24,11 @@ const allowedOrigins = [
   "https://smart-farmer-b2-b-b2-c-rad-project-two.vercel.app",
 ];
 
+
+
+
+
+
 app.use(
   cors({
     origin: allowedOrigins,
