@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Keep track of the connection across serverless invocations
 let isConnected = false;
 
 export const connectDB = async () => {
@@ -18,12 +17,9 @@ export const connectDB = async () => {
   }
 
   try {
-    // Connect with proper options for serverless
+    // Mongoose 7+ no longer needs useNewUrlParser & useUnifiedTopology
     await mongoose.connect(uri, {
-      // optional but recommended
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 30000, // increase timeout for slow connections
+      serverSelectionTimeoutMS: 30000, // optional: increases timeout
     });
 
     isConnected = true;
@@ -33,7 +29,7 @@ export const connectDB = async () => {
     throw error;
   }
 
-  // Optional: listen for disconnects (good for serverless debugging)
+  // Optional: handle disconnects
   mongoose.connection.on("disconnected", () => {
     console.log("⚠️ MongoDB disconnected");
     isConnected = false;
