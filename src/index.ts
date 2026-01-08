@@ -20,7 +20,7 @@ app.use(express.json());
 
 // ✅ CORS CONFIGURATION
 const allowedOrigins = [
-  "https://sf-fe-iota.vercel.app/"
+  "https://sf-fe-iota.vercel.app"
 ];
 
 app.use(
