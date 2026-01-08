@@ -5,10 +5,12 @@ import { User } from "../model/User";
 import cloudinary from "../config/cloudinary";
 import streamifier from "streamifier";
 import { AuthRequest } from "../middleware/auth";
+import { connectDB } from "../utill/isDBConnected";
 
 export const createNewAd = async (req: Request, res: Response) => {
   try {
     const { title, description, price, category } = req.body;
+    await connectDB();
 
     // 🔐 Auth
     const authHeader = req.headers.authorization;
@@ -88,6 +90,8 @@ const uploadAdImages = async (
 export const getUserAds = async (req: Request, res: Response) => {
   try{
     const authHeader = req.headers.authorization;
+    await connectDB();
+
     if (!authHeader) {
       return res.status(401).json({ message: "Authorization token missing" });
     }
@@ -127,6 +131,8 @@ export const getUserAds = async (req: Request, res: Response) => {
 
 export const getAllAds = async (req: Request, res: Response) => {
   try {
+    await connectDB();
+
     // Get page and limit from query params, with defaults
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 6;
@@ -168,6 +174,7 @@ export const getAllAds = async (req: Request, res: Response) => {
 export const getAdAllDetails = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    await connectDB();
 
     if (!id) {
       return res.status(400).json({ message: "Ad ID is required" });
@@ -194,6 +201,7 @@ export const getAdAllDetails = async (req: Request, res: Response) => {
 export const deleteAd = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
+    await connectDB();
 
     if (!id) {
       return res.status(400).json({ message: "Ad ID is required" });
@@ -218,6 +226,7 @@ export const deleteAd = async (req: AuthRequest, res: Response) => {
 export const updateAd = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
+    await connectDB();
     const { title, description, category, price } = req.body;
 
     if (!id) {

@@ -6,12 +6,14 @@ import { sendMail } from "../utill/mailer";
 import { OTP, OTPInterface } from "../model/OTP";
 import {signAccessToken, refreshToken} from "../utill/token"
 import jwt from "jsonwebtoken";
+import { connectDB } from "../utill/isDBConnected";
 import dotenv from "dotenv";
 dotenv.config();
 
 export const register = async(req:Request, res:Response)=>{
     try{
         const {fristName, lastName, password, email, role} = req.body
+        await connectDB();
 
         if(!fristName || !lastName || !password || !email || !role){
             return res.status(400).json({message : "The All Fields are required"})
@@ -58,6 +60,7 @@ export const register = async(req:Request, res:Response)=>{
 
 export const login = async(req:Request, res:Response)=>{
     const {email,password} = req.body
+    await connectDB();
 
     if(!isEmail(email)){
         return res.status(400).send("Invalid Email Enterd!.")
@@ -95,6 +98,7 @@ async function isEmailExist(email :string):Promise<boolean>{
 export const fogetPassword = async (req:Request, res:Response)=>{
     try{
         const email = req.body.email;
+        await connectDB();
 
         if(!isEmail(email)){
             return res.status(400).send("Invalid Email!!..")
@@ -138,6 +142,7 @@ export const fogetPassword = async (req:Request, res:Response)=>{
 export const checkOtp = async(req:Request, res:Response)=>{
     try{
         const {email, otp} = req.body
+        await connectDB();
         
         if(await emailValidate(res, email)){
             //Here getting the Otp Object Find by email
@@ -185,6 +190,7 @@ async function emailValidate(res:Response,email:string):Promise<boolean>{
 export const changePassword = async(req:Request, res:Response)=>{
     try{
         const {email, password} = req.body
+        await connectDB();
         
         if (!email || !password) {
             return res.status(400).send("Email and password are required");
@@ -218,6 +224,7 @@ export const changePassword = async(req:Request, res:Response)=>{
 export const getUserRole = async(req:Request, res:Response)=>{
    try {
     const { email } = req.query;
+    await connectDB();
 
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
@@ -240,6 +247,7 @@ export const getUserRole = async(req:Request, res:Response)=>{
 
 export const getMyDetails = async(req:Request, res:Response)=>{
     try {
+        await connectDB();
         //Here need to get the Token
         const authHeader = req.headers.authorization
         if(authHeader){
@@ -277,6 +285,7 @@ export const getMyDetails = async(req:Request, res:Response)=>{
 
 export const updateUser = async(req:Request, res:Response, next:NextFunction)=>{
     try{
+        await connectDB();
         const {firstName, lastName, email, phone, address, district, city} = req.body
         
         const authHeader = req.headers.authorization;
